@@ -38,7 +38,7 @@ class Client():
     def recv(self):
         """
         check for first 4 bytes to determine response length. Since size is variable int, the length could be from 1 to 4
-        need to take care of it inc ase swallowing the real message
+        need to take care of it in case swallowing the real message
         return response in string, need to parseFromString in the calling method
         """
 
@@ -85,6 +85,17 @@ class Client():
                 except :
                     print("error")
 
+    def ALoad(self, ship_id, truck_id):
+        command = amazon_pb2.ACommands()
+        command.simspeed = 100000
+        pack = command.load.add()
+        pack.whnum = 0
+        pack.shipid = ship_id;
+        pack.truckid = truck_id
+
+        self.send(command)
+
+
     def AToPack(self, product_id, description, quantity, ship_id):
         command = amazon_pb2.ACommands()
         command.simspeed = 100000
@@ -109,20 +120,18 @@ class Client():
         pid.count = quantity
         self.send(command)
 
-
-
 if __name__ == '__main__':
     client = Client()
     client.connect()
     client.AConnect()
 
-    client.APurchase(1, "cake", 3)
-    client.APurchase(2, "apple", 4)
+    # client.APurchase(1, "cake", 3)
+    # client.APurchase(2, "apple", 4)
     threading.Thread(target=client.process_AResponse).start()
-    client.APurchase(3, "banana", 5)
-    client.APurchase(4, "orange", 6)
-    client.AToPack(3, "banana", 10, 6)
-
+    # client.APurchase(3, "banana", 5)
+    # client.APurchase(4, "orange", 6)
+    # client.AToPack(3, "banana", 10, 6)
+    client.ALoad(6, 0)
 
     while(1) :
         pass
