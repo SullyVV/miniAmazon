@@ -32,6 +32,12 @@ class InitClient():
         self.sock.sendall(data_string)
 
     def recv(self):
+        """
+        check for first 4 bytes to determine response length. Since size is variable int, the length could be from 1 to 4
+        need to take care of it inc ase swallowing the real message
+        return response in string, need to parseFromString in the calling method
+        """
+
         #int length is at most 4 bytes long
         hdr_bytes = self.sock.recv(4)
         (msg_length, hdr_length) = _DecodeVarint32(hdr_bytes, 0)
@@ -46,9 +52,9 @@ class InitClient():
             rsp_buffer.write(rsp_bytes)
             msg_length = msg_length - len(rsp_bytes)
 
-        AConnected = amazon_pb2.AConnected()
-        AConnected.ParseFromString(rsp_buffer.getvalue())
-        #print(AConnected.error)
+
+        return rsp_buffer.getvalue()
+
 
     def close(self):
         self.sock.close()
@@ -57,7 +63,7 @@ class InitClient():
         msg = amazon_pb2.AConnect()
         msg.worldid = 1008
         self.send(msg)
-        return self.recv()
+        self.recv()
 
     def APurchase(self):
         command = amazon_pb2.ACommands()
@@ -68,8 +74,11 @@ class InitClient():
         goods.id = 1
         goods.description = 'andrew'
         goods.count = 3
-        client.send(command)
-        client.recv()
+        self.send(command)
+        while (1):
+            print(self.recv())
+
+
 
 if __name__ == '__main__':
     client = InitClient()
