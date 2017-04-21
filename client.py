@@ -3,11 +3,22 @@ from google.protobuf.internal.decoder import _DecodeVarint32
 from google.protobuf.internal.encoder import _VarintBytes
 import amazon_pb2
 import io
+import threading
+import time
+
 
 HOST = 'colab-sbx-pvt-19.oit.duke.edu'
 PORT = 23456
 
-class InitClient():
+def threaded(fn):
+    def wrapper(*args, **kwargs):
+            t = threading.Thread(target=fn, args=args, kwargs=kwargs)
+            t.start()
+    return wrapper
+
+
+
+class Client():
     """
  
     """
@@ -65,27 +76,43 @@ class InitClient():
         self.send(msg)
         self.recv()
 
-    def APurchase(self):
+    @threaded
+    def process_AResponse(self) :
+        while (1):
+            str = self.recv()
+            if (len(str) > 0):
+                response = amazon_pb2.AResponses()
+                response.ParseFromString(str)
+                print(response)
+
+
+    def APurchase(self, product_id, description, quantity):
         command = amazon_pb2.ACommands()
-        command.simspeed = 100000000
+        command.simspeed = 100
         purchase = command.buy.add()
         purchase.whnum = 0
-        goods = purchase.things.add()
-        goods.id = 1
-        goods.description = 'andrew'
-        goods.count = 3
+        pid = purchase.things.add()
+        pid.id = product_id
+        pid.description = description
+        pid.count = quantity
         self.send(command)
-        while (1):
-            print(self.recv())
 
 
 
 if __name__ == '__main__':
-    client = InitClient()
+    client = Client()
     client.connect()
     client.AConnect()
-    client.APurchase()
-    while (1):
+    client.process_AResponse()
+    time.sleep(2)
+    client.APurchase(1, "cake", 3)
+    client.APurchase(2, "apple", 4)
+    client.APurchase(3, "banana", 5)
+    client.APurchase(4, "orange", 6)
+
+
+    while(1) :
         pass
 
+    client.close()
 
