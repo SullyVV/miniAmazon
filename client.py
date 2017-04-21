@@ -50,8 +50,6 @@ class Client():
             rsp_buffer.write(hdr_bytes[hdr_length:])
 
         # read the remaining message bytes
-        print(msg_length)
-        print(hdr_length)
         msg_length = msg_length - (4 - hdr_length)
         while msg_length > 0:
             rsp_bytes = self.sock.recv(min(8096, msg_length))
@@ -118,12 +116,12 @@ if __name__ == '__main__':
     client.connect()
     client.AConnect()
 
-    # client.APurchase(1, "cake", 3)
-    # client.APurchase(2, "apple", 4)
+    client.APurchase(1, "cake", 3)
+    client.APurchase(2, "apple", 4)
     threading.Thread(target=client.process_AResponse).start()
-    # client.APurchase(3, "banana", 5)
-    #client.APurchase(4, "orange", 6)
-    client.AToPack(3, "banana", 5, 1)
+    client.APurchase(3, "banana", 5)
+    client.APurchase(4, "orange", 6)
+    client.AToPack(3, "banana", 10, 6)
 
 
     while(1) :
