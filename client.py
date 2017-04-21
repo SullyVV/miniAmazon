@@ -10,13 +10,6 @@ import time
 HOST = 'colab-sbx-pvt-19.oit.duke.edu'
 PORT = 23456
 
-def threaded(fn):
-    def wrapper(*args, **kwargs):
-            t = threading.Thread(target=fn, args=args, kwargs=kwargs)
-            t.start()
-    return wrapper
-
-
 
 class Client():
     """
@@ -76,7 +69,6 @@ class Client():
         self.send(msg)
         self.recv()
 
-    @threaded
     def process_AResponse(self) :
         while (1):
             str = self.recv()
@@ -88,7 +80,7 @@ class Client():
 
     def APurchase(self, product_id, description, quantity):
         command = amazon_pb2.ACommands()
-        command.simspeed = 100
+        command.simspeed = 100000
         purchase = command.buy.add()
         purchase.whnum = 0
         pid = purchase.things.add()
@@ -103,10 +95,10 @@ if __name__ == '__main__':
     client = Client()
     client.connect()
     client.AConnect()
-    client.process_AResponse()
-    time.sleep(2)
+
     client.APurchase(1, "cake", 3)
     client.APurchase(2, "apple", 4)
+    threading.Thread(target=client.process_AResponse).start()
     client.APurchase(3, "banana", 5)
     client.APurchase(4, "orange", 6)
 
