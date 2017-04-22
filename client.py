@@ -97,6 +97,9 @@ class Client():
 
 
     def AToPack(self, product_id, description, quantity, ship_id):
+        """
+        ship_id should be unique per ship
+        """     
         command = amazon_pb2.ACommands()
         command.simspeed = 100000
         pack = command.topack.add()
