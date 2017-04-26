@@ -25,5 +25,8 @@ urlpatterns = [
     url(r'^accounts/login/$', views.login, name='login'),
     #/logout/,
     url(r'^accounts/logout/$', views.logout, name='logout'),
-
+    #/buy/,
+    url(r'^product/$', views.buy, name='product'),
+    #/user/admin,
+    url(r'^user/(?P<userid>[0-9]+)/$', views.user, name='user'),
 ]

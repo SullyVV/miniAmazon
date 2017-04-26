@@ -1,0 +1,8 @@
+{% extends 'amazon/base.html' %}
+{% block title %}Userpage{% endblock %}
+{% block body %}
+<center>
+<h1>welcome: {{user.username}} !</h1>
+    <a href="{% url 'amazon:product'%}">buy</a>
+</center>
+{% endblock %}
