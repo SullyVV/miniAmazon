@@ -1,15 +1,14 @@
-from django.http import HttpResponseRedirect
-from django.shortcuts import render, render_to_response, get_object_or_404
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from django.contrib.auth.models import User
-
-
-# Create your views here.
+from django.http import HttpResponseRedirect
+from django.shortcuts import render, render_to_response, get_object_or_404
 from django.urls import reverse
 
-from .forms import UserForm_login
 
+from .forms import UserForm_login, ProductForm
+from .models import Whstock
 
+users = {}
 def index(request):
     return render(request, 'amazon/index.html')
 
@@ -23,6 +22,10 @@ def login(request):
             if user is not None:
                 auth_login(request,user)
                 userid = User.objects.get(username=username).id
+                # create Client object for this client
+                from client import Client
+                client = Client()
+                users[userid] = client
                 return HttpResponseRedirect(reverse('amazon:user',args=(userid,)))
             else:
                 error_msg = "Wrong password, please try again"
@@ -33,11 +36,28 @@ def login(request):
 
 def logout(request):
     auth_logout(request)
+    users.pop()
     # redirect to index page
     return HttpResponseRedirect(reverse('amazon:index'))
 
 def buy(request):
-    print("in buy function")
+    if request.method == "POST":
+        uf = ProductForm(request.POST)
+        if uf.is_valid():
+            pid = uf.cleaned_data['pid']
+            dsc = uf.cleaned_data['dsc']
+            num = uf.cleaned_data['num']
+            products = Whstock.objects.filter(dsc = dsc).filter(pid = pid).filter(num__gte = num)
+            if products is not None:
+                # tell warehouse to import
+                print("have enought stock")
+            else:
+                # accept this order
+                print("dont have enough stock")
+
+    else:
+        uf = ProductForm()
+    return render(request, 'amazon/product.html', {'uf':uf})
 
 def user(request, userid):
     if not request.user.is_authenticated:
