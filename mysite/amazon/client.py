@@ -6,7 +6,7 @@ from django.shortcuts import get_object_or_404
 from google.protobuf.internal.decoder import _DecodeVarint32
 from google.protobuf.internal.encoder import _VarintBytes
 
-from .models import Whstock
+from .models import Whstock, Transaction
 from . import amazon_pb2
 
 HOST = 'colab-sbx-pvt-25.oit.duke.edu'
@@ -95,6 +95,14 @@ class Client():
                                 whstock.dsc = thing.description
                                 whstock.count = thing.count
                                 whstock.save()
+                    # handle pack ready response
+                    for currReady in response.ready:
+                        # ship_id returned by sim world is always larger than the ship_id we sent by 1
+                        trans = Transaction.objects.get(ship_id = currReady - 1)
+                        trans.ready = True
+                        trans.save()
+                    # tell UPS packages is ready
+
                 except:
                     print('error')
 
