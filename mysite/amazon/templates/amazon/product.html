@@ -1,0 +1,14 @@
+{% extends 'amazon/base.html' %}
+{% block title %}Order{% endblock %}
+{% block body %}
+<center>
+<h1>Order detail</h1>
+    <div class="container">
+<form method = 'post' enctype="multipart/form-data">
+    {% csrf_token %}
+{{uf.as_p}}
+<input type="submit" value = "ok" />
+</form>
+        </div>
+</center>
+{% endblock %}
