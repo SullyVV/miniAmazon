@@ -8,10 +8,12 @@ from django.urls import reverse
 
 from .client import Client
 from .forms import UserForm_login, ProductForm
-from .models import Whstock
+from .models import Whstock, Transaction
 
 users = {}
 threads = {}
+ship_id = 0
+
 def index(request):
     return render(request, 'amazon/index.html')
 
@@ -56,9 +58,21 @@ def buy(request):
             client = users[request.user.id]
             if len(products) != 0:
                 # accept this order
-                print("have enough stock")
+                trans = Transaction()
+                trans.user = request.user
+                trans.user_name = request.user.username
+                trans.stock = products[0]
+                global ship_id
+                trans.ship_id = ship_id
+                ship_id = ship_id + 1
+                trans.arrived = True
+                trans.save()
+                products[0].count = products[0].count - num
+                products[0].save()
+                client.AToPack(products[0].pid, products[0].dsc, num, ship_id)
+                return render(request, 'amazon/order_accepted.html', {'user_id':request.user.id})
             else:
-                # tell warehouse to import
+                # deny order and tell warehouse to import
                 client.APurchase(pid, dsc, num)
                 return render(request, 'amazon/product.html', {'uf': uf, 'error_msg': 'Your order is rejected (no sufficient stock), Plz try again later...'})
     else:
@@ -72,3 +86,7 @@ def user(request, userid):
     return render(request, 'amazon/user.html',
                     {'user': user})
     # show all event of current user and put a plus button for it to add new event, traverse through entire database and show events
+
+def history(request, user_id):
+    # show transactions history
+    print("show history for user: " + user_id)

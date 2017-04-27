@@ -1,9 +1,8 @@
 import io
 import socket
 import threading
-import time
-import traceback
 
+from django.shortcuts import get_object_or_404
 from google.protobuf.internal.decoder import _DecodeVarint32
 from google.protobuf.internal.encoder import _VarintBytes
 
@@ -80,18 +79,24 @@ class Client():
                 response = amazon_pb2.AResponses()
                 try:
                     response.ParseFromString(str)
-                    # handle response (import stock)
+                    print(response)
+                    # handle import new stock
                     for arrive in response.arrived:
                         things = arrive.things
                         for thing in things:
-                            whstock = Whstock()
-                            whstock.whnum = arrive.whnum
-                            whstock.pid = thing.id
-                            whstock.dsc = thing.description
-                            whstock.count = thing.count
-                            whstock.save()
+                            products = Whstock.objects.filter(pid = thing.id)
+                            if len(products) != 0:
+                                products[0].count = products[0].count + thing.count
+                                products[0].save()
+                            else :
+                                whstock = Whstock()
+                                whstock.whnum = arrive.whnum
+                                whstock.pid = thing.id
+                                whstock.dsc = thing.description
+                                whstock.count = thing.count
+                                whstock.save()
                 except:
-                    print("error")
+                    print('error')
 
     def ALoad(self, ship_id, truck_id):
         command = amazon_pb2.ACommands()

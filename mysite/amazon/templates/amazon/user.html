@@ -4,5 +4,9 @@
 <center>
 <h1>welcome: {{user.username}} !</h1>
     <a href="{% url 'amazon:product'%}">buy</a>
+    <br>
+    {% if user%}
+    <a href="{% url 'amazon:history' user.id%}">Order Histroy</a>
+    {% endif %}
 </center>
 {% endblock %}

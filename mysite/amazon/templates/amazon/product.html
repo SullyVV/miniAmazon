@@ -3,6 +3,9 @@
 {% block body %}
 <center>
 <h1>Order detail</h1>
+    {% if error_msg %}
+        <h3>{{error_msg}}</h3>
+    {% endif %}
     <div class="container">
 <form method = 'post' enctype="multipart/form-data">
     {% csrf_token %}

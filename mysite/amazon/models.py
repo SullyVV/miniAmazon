@@ -15,6 +15,7 @@ class Transaction(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     user_name = models.CharField(max_length=100)
     stock = models.ForeignKey(Whstock, on_delete=models.CASCADE)
+    ship_id = models.IntegerField(default=-1)
     arrived = models.BooleanField(default=False)
     ready = models.BooleanField(default=False)
     loaded = models.BooleanField(default=False)
