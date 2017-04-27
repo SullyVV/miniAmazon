@@ -62,6 +62,8 @@ def buy(request):
                 trans.user = request.user
                 trans.user_name = request.user.username
                 trans.stock = products[0]
+                trans.product_name = dsc
+                trans.product_num = num
                 global ship_id
                 trans.ship_id = ship_id
                 ship_id = ship_id + 1
@@ -90,3 +92,5 @@ def user(request, userid):
 def history(request, user_id):
     # show transactions history
     print("show history for user: " + user_id)
+    trans = Transaction.objects.filter(user = request.user)
+    return render(request, 'amazon/history.html', {'trans':trans})

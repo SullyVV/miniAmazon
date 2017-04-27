@@ -1,0 +1,43 @@
+{% extends 'amazon/base.html' %}
+{% block title %}Order{% endblock %}
+{% block body %}
+<center>
+<h1>Order Hitory</h1>
+<table>
+  <tr>
+      <th>product_name</th>
+      <th>product_number</th>
+      <th>arrived at warehouse</th>
+      <th>ready for UPS pickup</th>
+      <th>loaded into UPS trucks</th>
+      <th>UPS Tracking Number</th>
+  </tr>
+    {% for tran in trans %}
+        <tr>
+            <td>{{tran.product_name}}</td>
+            <td>{{tran.product_num}}</td>
+            {% if tran.arrived %}
+                <td>yes</td>
+            {% else %}
+                <td>no</td>
+            {% endif %}
+            {% if tran.ready %}
+                <td>yes</td>
+            {% else %}
+                <td>no</td>
+            {% endif %}
+            {% if tran.loaded %}
+                <td>yes</td>
+            {% else %}
+                <td>no</td>
+            {% endif %}
+            {% if tran.package_id != -1 %}
+                <td>{{tran.package_id}}</td>
+            {% else %}
+                <td></td>
+            {% endif %}
+        </tr>
+    {% endfor %}
+</table>
+</center>
+{% endblock %}
