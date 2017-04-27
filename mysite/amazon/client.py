@@ -2,10 +2,12 @@ import io
 import socket
 import threading
 import time
+import traceback
 
 from google.protobuf.internal.decoder import _DecodeVarint32
 from google.protobuf.internal.encoder import _VarintBytes
 
+from .models import Whstock
 from . import amazon_pb2
 
 HOST = 'colab-sbx-pvt-25.oit.duke.edu'
@@ -76,11 +78,19 @@ class Client():
             str = self.recv()
             if (len(str) > 0):
                 response = amazon_pb2.AResponses()
-                try :
+                try:
                     response.ParseFromString(str)
-                    print(response)
-                    print(len(str))
-                except :
+                    # handle response (import stock)
+                    for arrive in response.arrived:
+                        things = arrive.things
+                        for thing in things:
+                            whstock = Whstock()
+                            whstock.whnum = arrive.whnum
+                            whstock.pid = thing.id
+                            whstock.dsc = thing.description
+                            whstock.count = thing.count
+                            whstock.save()
+                except:
                     print("error")
 
     def ALoad(self, ship_id, truck_id):
@@ -129,12 +139,12 @@ if __name__ == '__main__':
     # client.APurchase(1, "cake", 3)
     # client.APurchase(2, "apple", 4)
     threading.Thread(target=client.process_AResponse).start()
-    # client.APurchase(3, "banana", 5)
-    client.APurchase(4, "orange", 6)
-    time.sleep(3)
-    client.AToPack(3, "banana", 10, 6)
-    time.sleep(3)
-    client.ALoad(6, 0)
+    client.APurchase(1, "banana", 5)
+    # client.APurchase(4, "orange", 6)
+    # time.sleep(3)
+    # client.AToPack(3, "banana", 10, 6)
+    # time.sleep(3)
+    # client.ALoad(6, 0)
 
     while(1) :
         pass

@@ -1,4 +1,4 @@
-import sys
+import threading
 
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from django.contrib.auth.models import User
@@ -11,6 +11,7 @@ from .forms import UserForm_login, ProductForm
 from .models import Whstock
 
 users = {}
+threads = {}
 def index(request):
     return render(request, 'amazon/index.html')
 
@@ -29,6 +30,7 @@ def login(request):
                 client.connect()
                 client.AConnect()
                 users[userid] = client
+                threads[userid] = threading.Thread(target=client.process_AResponse).start()
                 return HttpResponseRedirect(reverse('amazon:user',args=(userid,)))
             else:
                 error_msg = "Wrong password, please try again"
@@ -50,15 +52,15 @@ def buy(request):
             pid = uf.cleaned_data['pid']
             dsc = uf.cleaned_data['dsc']
             num = uf.cleaned_data['num']
-            products = Whstock.objects.filter(dsc = dsc).filter(pid = pid).filter(num__gte = num)
-            if products is not None:
+            products = Whstock.objects.filter(dsc = dsc).filter(pid = pid).filter(count__gte = num)
+            client = users[request.user.id]
+            if len(products) != 0:
                 # accept this order
                 print("have enough stock")
             else:
                 # tell warehouse to import
-                print("dont have enought stock")
-
-
+                client.APurchase(pid, dsc, num)
+                return render(request, 'amazon/product.html', {'uf': uf, 'error_msg': 'Your order is rejected (no sufficient stock), Plz try again later...'})
     else:
         uf = ProductForm()
     return render(request, 'amazon/product.html', {'uf':uf})
