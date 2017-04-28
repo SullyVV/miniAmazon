@@ -32,7 +32,8 @@ def login(request):
                 client.connect()
                 client.AConnect()
                 users[userid] = client
-                threads[userid] = threading.Thread(target=client.process_AResponse).start()
+                threads[userid] = threading.Thread(target=client.process_AResponse)
+                threads[userid].start()
                 return HttpResponseRedirect(reverse('amazon:user',args=(userid,)))
             else:
                 error_msg = "Wrong password, please try again"
@@ -44,6 +45,8 @@ def login(request):
 def logout(request):
     auth_logout(request)
     users.pop(request.user.id)
+    # need to kill this thread before pop up map
+    threads.pop(request.user.id)
     # redirect to index page
     return HttpResponseRedirect(reverse('amazon:index'))
 
