@@ -110,7 +110,11 @@ def search(request):
         sf = SearchForm(request.POST)
         if sf.is_valid():
             catalog = sf.cleaned_data['catalog']
-            products = Whstock.objects.filter(ctlg=catalog)
+            name = sf.cleaned_data['name']
+            if catalog is not None:
+                products = Whstock.objects.filter(ctlg=catalog)
+            if name is not None:
+                products = Whstock.objects.filter(dsc=name)
             if len(products) != 0:
                 return render(request, 'amazon/search_result.html', {'flag':0, 'products': products})
             else :

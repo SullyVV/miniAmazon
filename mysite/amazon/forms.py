@@ -13,4 +13,5 @@ class ProductForm(forms.Form):
     y = forms.IntegerField(label="address_y")
 
 class SearchForm(forms.Form):
-    catalog = forms.CharField(label="search for catalog")
+    catalog = forms.CharField(label="search for catalog", required=False)
+    name = forms.CharField(label="search for product name", required=False)
