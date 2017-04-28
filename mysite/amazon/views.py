@@ -62,6 +62,7 @@ def buy(request):
             client = users[request.user.id]
             if len(products) != 0:
                 # accept this order
+                global ship_id
                 trans = Transaction()
                 trans.user = request.user
                 trans.user_name = request.user.username
@@ -70,14 +71,13 @@ def buy(request):
                 trans.product_num = num
                 trans.address_x = addr_x
                 trans.address_y = addr_y
-                global ship_id
                 trans.ship_id = ship_id
-                ship_id = ship_id + 1
                 trans.arrived = True
                 trans.save()
                 products[0].count = products[0].count - num
                 products[0].save()
                 client.AToPack(products[0].pid, products[0].dsc, num, ship_id)
+                ship_id = ship_id + 1
                 return render(request, 'amazon/order_accepted.html', {'user_id':request.user.id})
             else:
                 # deny order and tell warehouse to import

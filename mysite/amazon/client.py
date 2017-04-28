@@ -98,7 +98,7 @@ class Client():
                     # handle pack ready response
                     for currReady in response.ready:
                         # ship_id returned by sim world is always larger than the ship_id we sent by 1
-                        trans = Transaction.objects.get(ship_id = currReady - 1)
+                        trans = Transaction.objects.get(ship_id = currReady)
                         trans.ready = True
                         trans.save()
                     # tell UPS packages is ready and ask for trucks (provide destinaiton address)
