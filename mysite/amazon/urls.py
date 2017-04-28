@@ -6,7 +6,7 @@ from . import views
 app_name = 'amazon'
 class MyRegistrationView(RegistrationView):
     def get_success_url(self, user):
-        return "/amazon/"ß
+        return "/amazon/"
 urlpatterns = [
     #/amazon/
     url(r'^$', views.index, name='index'),
