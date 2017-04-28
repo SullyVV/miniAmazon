@@ -6,16 +6,7 @@ from . import views
 app_name = 'amazon'
 class MyRegistrationView(RegistrationView):
     def get_success_url(self, user):
-        return "/amazon/"
-
-class MyRegistrationView(RegistrationView):
-    def get_success_url(self, user):
-        return "/amazon/"
-
-    def register(self, form):
-        new_user = form.save()
-        print("in new class")
-        return new_user
+        return "/amazon/"ß
 urlpatterns = [
     #/amazon/
     url(r'^$', views.index, name='index'),
