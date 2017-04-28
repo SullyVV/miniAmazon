@@ -7,7 +7,7 @@ from django.shortcuts import render, render_to_response, get_object_or_404
 from django.urls import reverse
 
 from .client import Client
-from .forms import UserForm_login, ProductForm
+from .forms import UserForm_login, ProductForm, SearchForm
 from .models import Whstock, Transaction
 
 users = {}
@@ -44,9 +44,12 @@ def login(request):
 
 def logout(request):
     auth_logout(request)
-    users.pop(request.user.id)
+
+    # users.pop(request.user.id)
+    # users.pop(3)
     # need to kill this thread before pop up map
-    threads.pop(request.user.id)
+    # threads.pop(request.user.id)
+    # threads.pop(request.user.id)
     # redirect to index page
     return HttpResponseRedirect(reverse('amazon:index'))
 
@@ -57,6 +60,8 @@ def buy(request):
             pid = uf.cleaned_data['pid']
             dsc = uf.cleaned_data['dsc']
             num = uf.cleaned_data['num']
+            addr_x = uf.cleaned_data['x']
+            addr_y = uf.cleaned_data['y']
             products = Whstock.objects.filter(dsc = dsc).filter(pid = pid).filter(count__gte = num)
             client = users[request.user.id]
             if len(products) != 0:
@@ -67,6 +72,8 @@ def buy(request):
                 trans.stock = products[0]
                 trans.product_name = dsc
                 trans.product_num = num
+                trans.address_x = addr_x
+                trans.address_y = addr_y
                 global ship_id
                 trans.ship_id = ship_id
                 ship_id = ship_id + 1
@@ -97,3 +104,22 @@ def history(request, user_id):
     print("show history for user: " + user_id)
     trans = Transaction.objects.filter(user = request.user)
     return render(request, 'amazon/history.html', {'trans':trans})
+
+def catalog(request, catalog_id):
+    products = Whstock.objects.filter(ctlg_id=catalog_id)
+    return render(request, 'amazon/catalog.html', {'products': products})
+
+def search(request):
+    if (request.method == 'POST'):
+        sf = SearchForm(request.POST)
+        if sf.is_valid():
+            catalog = sf.cleaned_data['catalog']
+            products = Whstock.objects.filter(ctlg=catalog)
+            if len(products) != 0:
+                return render(request, 'amazon/search_result.html', {'flag':0, 'products': products})
+            else :
+                return render(request, 'amazon/search_result.html', {'flag':1, 'error_msg': "no products"})
+
+    else:
+        sf = SearchForm()
+    return render(request, 'amazon/search.html', {'sf':sf})

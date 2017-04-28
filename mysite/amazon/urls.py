@@ -20,6 +20,10 @@ urlpatterns = [
     url(r'^product/$', views.buy, name='product'),
     #/amazon/history/5
     url(r'^history/(?P<user_id>[0-9]+)/$', views.history, name='history'),
+    #/amazon/catalog/1
+    url(r'^catalog/(?P<catalog_id>[0-9]+)/$', views.catalog, name='catalog'),
+    #/amazon/search
+    url(r'^search/$', views.search, name='search'),
     #/user/admin,
     url(r'^user/(?P<userid>[0-9]+)/$', views.user, name='user'),
 ]

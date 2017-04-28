@@ -90,7 +90,7 @@ class Client():
                                 products[0].save()
                             else :
                                 whstock = Whstock()
-                                whstock.whnum = arrive.whnum
+                                whstock.hid = arrive.whnum
                                 whstock.pid = thing.id
                                 whstock.dsc = thing.description
                                 whstock.count = thing.count
@@ -101,8 +101,8 @@ class Client():
                         trans = Transaction.objects.get(ship_id = currReady - 1)
                         trans.ready = True
                         trans.save()
-                    # tell UPS packages is ready
-
+                    # tell UPS packages is ready and ask for trucks (provide destinaiton address)
+                    # tell warehouse to load when UPS trucks ready
                 except:
                     print('error')
 

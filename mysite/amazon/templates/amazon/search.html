@@ -1,12 +1,12 @@
-
+{% extends 'amazon/base.html' %}
+{% block title %}Order{% endblock %}
+{% block body %}
 <center>
-<h1>Login：</h1>
-{% if error_msg %}
-    <h3>{{error_msg}}</h3>
-{% endif %}
+<h1>search：</h1>
 <form method = 'post' enctype="multipart/form-data">
     {% csrf_token %}
-    {{uf.as_p}}
+    {{sf.as_p}}
     <input type="submit" value = "ok" />
 </form>
 </center>
+{% endblock %}

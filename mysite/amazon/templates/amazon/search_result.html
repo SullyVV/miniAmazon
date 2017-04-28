@@ -1,0 +1,32 @@
+{% extends 'amazon/base.html' %}
+{% block title %}Order{% endblock %}
+{% block body %}
+<center>
+<h1>Search Result</h1>
+{% if flag == 1 %}
+    {{ error_msg }}
+    {% elif flag == 0 %}
+
+    <table>
+      <tr>
+          <th>product_id</th>
+          <th>product_name</th>
+          <th>product stock number</th>
+      </tr>
+        {% for product in products %}
+            <tr>
+                <td>{{product.pid}}</td>
+                <td>{{product.dsc}}</td>
+                <td>{{product.count}}</td>
+                <td>{{product.href}}</td>
+            </tr>
+        {% endfor %}
+    </table>
+
+
+
+
+
+    {% endif %}
+</center>
+{% endblock %}

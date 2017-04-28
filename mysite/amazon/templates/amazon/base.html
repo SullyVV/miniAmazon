@@ -41,12 +41,13 @@
             <ul class="nav navbar-nav">
                 <li><a href="{% url 'amazon:index' %}"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>&nbsp; Home</a></li>
                 <li><a href="{% url 'amazon:user' user.id %}"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp; Userpage</a></li>
+
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li>
-                    <a href="{% url 'amazon:login' %}">
+                    <a href="{% url 'amazon:logout' %}">
                         <span class="glyphicon glyphicon-off" aria-hidden="true"></span>&nbsp; Logout
-                    </a>
+                </a>
                 </li>
             </ul>
         </div>

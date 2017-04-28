@@ -3,6 +3,8 @@
 {% block body %}
 <center>
 <h1>welcome: {{user.username}} !</h1>
+    <a href="{% url 'amazon:search' %}">Search for Product</a>
+    <br>
     <a href="{% url 'amazon:product'%}">buy</a>
     <br>
     {% if user%}
