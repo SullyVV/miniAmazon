@@ -43,14 +43,10 @@ def login(request):
     return render(request, 'amazon/login.html', {'uf':uf})
 
 def logout(request):
-    auth_logout(request)
-
-    # users.pop(request.user.id)
-    # users.pop(3)
     # need to kill this thread before pop up map
-    # threads.pop(request.user.id)
-    # threads.pop(request.user.id)
-    # redirect to index page
+    threads.pop(request.user.id)
+    users.pop(request.user.id)
+    auth_logout(request)
     return HttpResponseRedirect(reverse('amazon:index'))
 
 def buy(request):
