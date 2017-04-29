@@ -125,7 +125,8 @@ def put_order(request, product_id):
                 client.APurchase(product.pid, product.dsc, order_num - product.count)
                 return render(request, 'amazon/put_order.html', {'pf': pf, 'product':product, 'error_msg': 'Your order is rejected (no sufficient stock), Plz try again later...'})
     else:
-        pf = ProductForm()
+        userInfo = get_object_or_404(UserInfo, user_id = request.user.id)
+        pf = ProductForm({'x': userInfo.address_x, 'y': userInfo.address_y, 'ups_act':userInfo.ups_act})
     return render(request, 'amazon/put_order.html', {'pf':pf, 'product':product})
 
 def user(request, userid):

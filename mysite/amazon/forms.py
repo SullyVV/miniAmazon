@@ -7,9 +7,9 @@ class UserForm_login(forms.Form):
 
 class ProductForm(forms.Form):
     order_num = forms.IntegerField(label="quantity")
-    x = forms.IntegerField(label="address_x")
-    y = forms.IntegerField(label="address_y")
-    ups_act = forms.IntegerField(label="UPS Account number", required=False)
+    x = forms.IntegerField(label="address_x (prefilled with default address)")
+    y = forms.IntegerField(label="address_y (prefilled with default address)")
+    ups_act = forms.IntegerField(label="UPS Account number (prefilled with default UPS Account)", required=False)
 
 class SearchForm(forms.Form):
     catalog = forms.CharField(label="search for catalog", required=False)
