@@ -96,6 +96,8 @@ def put_order(request, product_id):
             order_num = pf.cleaned_data['order_num']
             addr_x = pf.cleaned_data['x']
             addr_y = pf.cleaned_data['y']
+            ups_act = pf.cleaned_data['ups_act']
+            print(ups_act)
             client = users[request.user.id]
             if order_num <= product.count:
                 # accept this order
@@ -106,6 +108,8 @@ def put_order(request, product_id):
                 trans.stock = product
                 trans.product_name = product.dsc
                 trans.product_num = order_num
+                if ups_act is not None:
+                    trans.ups_act = ups_act
                 trans.address_x = addr_x
                 trans.address_y = addr_y
                 trans.ship_id = ship_id

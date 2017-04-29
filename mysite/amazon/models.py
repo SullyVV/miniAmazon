@@ -19,6 +19,7 @@ class Transaction(models.Model):
     user_name = models.CharField(max_length=100)
     address_x = models.IntegerField(default=-1)
     address_y = models.IntegerField(default=-1)
+    ups_act = models.IntegerField(default=-1)
     stock = models.ForeignKey(Whstock, on_delete=models.CASCADE)
     product_name = models.CharField(max_length=100, default="")
     product_num = models.IntegerField(default=-1)
