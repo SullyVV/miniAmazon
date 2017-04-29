@@ -187,14 +187,8 @@ def user_info(request, userid):
 
     else:
         userInfo = get_object_or_404(UserInfo, userid = userid)
-        addr_x = ''
-        addr_y = ''
-        ups_act = ''
-        if not userInfo.address_x:
-            addr_x = userInfo.address_x
-        if not userInfo.address_y:
-            addr_y = userInfo.address_y
-        if not userInfo.ups_act:
-            ups_act = userInfo.ups_act
+        addr_x = userInfo.address_x
+        addr_y = userInfo.address_y
+        ups_act = userInfo.ups_act
         uf = UserInfoForm({'address_x':addr_x, 'address_y':addr_y, 'ups_act':ups_act})
     return render(request, 'amazon/user_info.html', {'uf':uf})
