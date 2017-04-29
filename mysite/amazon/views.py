@@ -7,8 +7,8 @@ from django.shortcuts import render, render_to_response, get_object_or_404
 from django.urls import reverse
 
 from .client import Client
-from .forms import UserForm_login, ProductForm, SearchForm
-from .models import Whstock, Transaction
+from .forms import UserForm_login, ProductForm, SearchForm, UserInfoForm
+from .models import Whstock, Transaction, UserInfo
 
 users = {}
 threads = {}
@@ -167,3 +167,34 @@ def search(request):
     else:
         sf = SearchForm()
     return render(request, 'amazon/search.html', {'sf':sf})
+
+def user_info(request, userid):
+    if (request.method == 'POST'):
+        uf = UserInfoForm(request.POST)
+        if uf.is_valid():
+            addr_x = uf.cleaned_data['address_x']
+            addr_y = uf.cleaned_data['address_y']
+            ups_act = uf.cleaned_data['ups_act']
+            userInfo = get_object_or_404(UserInfo, userid=userid)
+            if addr_x is not None:
+                userInfo.address_x = addr_x
+            if addr_y is not None:
+                userInfo.address_y = addr_y
+            if userInfo is not None:
+                userInfo.ups_act = ups_act
+            userInfo.save()
+            return HttpResponseRedirect(reverse('amazon:user', args=(userid,)))
+
+    else:
+        userInfo = get_object_or_404(UserInfo, userid = userid)
+        addr_x = ''
+        addr_y = ''
+        ups_act = ''
+        if not userInfo.address_x:
+            addr_x = userInfo.address_x
+        if not userInfo.address_y:
+            addr_y = userInfo.address_y
+        if not userInfo.ups_act:
+            ups_act = userInfo.ups_act
+        uf = UserInfoForm({'address_x':addr_x, 'address_y':addr_y, 'ups_act':ups_act})
+    return render(request, 'amazon/user_info.html', {'uf':uf})

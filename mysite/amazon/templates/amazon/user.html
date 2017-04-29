@@ -9,6 +9,8 @@
     <br>
     {% if user%}
     <a href="{% url 'amazon:history' user.id%}">Order Histroy</a>
+    <br>
+    <a href="{% url 'amazon:user_info' user.id%}">User Information</a>
     {% endif %}
 </center>
 {% endblock %}

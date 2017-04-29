@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 class Whstock(models.Model):
-    wid = models.BigIntegerField(default=1000)
+    wid = models.BigIntegerField(default=1000)  #depends on world id
     hid = models.IntegerField(default=-1)
     ctlg_id = models.IntegerField(default=-1)
     ctlg = models.CharField(max_length=100, default="")
@@ -28,3 +28,10 @@ class Transaction(models.Model):
     arrived = models.BooleanField(default=False)
     ready = models.BooleanField(default=False)
     loaded = models.BooleanField(default=False)
+
+class UserInfo(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    userid = models.IntegerField(default=-1)
+    address_x = models.IntegerField(null=True)
+    address_y = models.IntegerField(null=True)
+    ups_act = models.IntegerField(null=True)

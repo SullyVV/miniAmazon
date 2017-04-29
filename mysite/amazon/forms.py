@@ -14,3 +14,9 @@ class ProductForm(forms.Form):
 class SearchForm(forms.Form):
     catalog = forms.CharField(label="search for catalog", required=False)
     name = forms.CharField(label="search for product name", required=False)
+
+
+class UserInfoForm(forms.Form):
+    address_x = forms.IntegerField(label="address_x", required=False)
+    address_y = forms.IntegerField(label="address_y", required=False)
+    ups_act = forms.IntegerField(label="ups account number", required=False)

@@ -1,12 +1,17 @@
 from django.conf.urls import url, include
 from django.contrib.auth import authenticate
-
+from .models import UserInfo
 from .registration.backends.simple.views import RegistrationView
 from . import views
 app_name = 'amazon'
 class MyRegistrationView(RegistrationView):
     def get_success_url(self, user):
+        userInfo = UserInfo()
+        userInfo.user = user
+        userInfo.userid = user.pk
+        userInfo.save()
         return "/amazon/"
+
 urlpatterns = [
     #/amazon/
     url(r'^$', views.index, name='index'),
@@ -26,6 +31,8 @@ urlpatterns = [
     url(r'^search/$', views.search, name='search'),
     #/amazon/put_order/1
     url(r'^put_order/(?P<product_id>[0-9]+)/$', views.put_order, name='put_order'),
-    #/user/admin,
+    #/user_info/1,
+    url(r'^user_info/(?P<userid>[0-9]+)/$', views.user_info, name='user_info'),
+    #/user/1,
     url(r'^user/(?P<userid>[0-9]+)/$', views.user, name='user'),
 ]
