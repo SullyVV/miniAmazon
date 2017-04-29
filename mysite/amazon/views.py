@@ -6,7 +6,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render, render_to_response, get_object_or_404
 from django.urls import reverse
 
-from .client import Client
+from .client_ import Client
 from .forms import UserForm_login, ProductForm, SearchForm, UserInfoForm
 from .models import Whstock, Transaction, UserInfo
 
@@ -44,8 +44,10 @@ def login(request):
 
 def logout(request):
     # need to kill this thread before pop up map
-    threads.pop(request.user.id)
-    users.pop(request.user.id)
+    if request.user.id in threads:
+        threads.pop(request.user.id)
+    if request.user.id in users:
+        users.pop(request.user.id)
     auth_logout(request)
     return HttpResponseRedirect(reverse('amazon:index'))
 
@@ -122,7 +124,7 @@ def put_order(request, product_id):
                 return render(request, 'amazon/order_accepted.html', {'user_id':request.user.id})
             else:
                 # deny order and tell warehouse to import
-                client.APurchase(product.pid, product.dsc, order_num - product.count)
+                client.APurchase(product.pid, product.dsc, order_num * 5)
                 return render(request, 'amazon/put_order.html', {'pf': pf, 'product':product, 'error_msg': 'Your order is rejected (no sufficient stock), Plz try again later...'})
     else:
         userInfo = get_object_or_404(UserInfo, user_id = request.user.id)
