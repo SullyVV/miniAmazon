@@ -1,0 +1,18 @@
+{% extends 'amazon/base.html' %}
+{% block title %}Order{% endblock %}
+{% block body %}
+<center>
+    {% if error_msg %}
+        <h3>{{error_msg}}</h3>
+    {% endif %}
+    <img src="{{product.href}}" style="width:304px;height:228px;">
+<h1>Product ID: {{product.pid}}</h1>
+    <h1>Product Name: {{product.dsc}}</h1>
+    <h1>Stock Number: {{product.count}}</h1>
+<form method = 'post' enctype="multipart/form-data">
+    {% csrf_token %}
+    {{pf.as_p}}
+    <input type="submit" value = "ok" />
+</form>
+</center>
+{% endblock %}

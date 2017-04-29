@@ -12,7 +12,7 @@ class Whstock(models.Model):
     count = models.BigIntegerField(default=-1)
     href = models.CharField(max_length=500, default="")
     def __str__(self):
-        return "product_id: " + str(self.pid) + "   " + "product_description: " + self.dsc + "   " + "product_num: " + str(self.num)
+        return "product_id: " + str(self.pid) + "   " + "product_description: " + self.dsc + "   " + "product_count: " + str(self.count)
 
 class Transaction(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)

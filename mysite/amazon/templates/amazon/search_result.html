@@ -12,14 +12,12 @@
           <th>product_id</th>
           <th>product_name</th>
           <th>product stock number</th>
-          <th>product link</th>
       </tr>
         {% for product in products %}
             <tr>
                 <td>{{product.pid}}</td>
-                <td>{{product.dsc}}</td>
+                <td><a href="{% url 'amazon:put_order' product.pid %}">{{product.dsc}}</a></td>
                 <td>{{product.count}}</td>
-                <td>{{product.href}}</td>
             </tr>
         {% endfor %}
     </table>

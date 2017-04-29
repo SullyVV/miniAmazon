@@ -6,9 +6,7 @@ class UserForm_login(forms.Form):
     password = forms.CharField(label="password", widget=forms.PasswordInput)
 
 class ProductForm(forms.Form):
-    pid = forms.IntegerField(label="product_id")
-    dsc = forms.CharField(label="product_description")
-    num = forms.IntegerField(label="product_count")
+    order_num = forms.IntegerField(label="order number")
     x = forms.IntegerField(label="address_x")
     y = forms.IntegerField(label="address_y")
 

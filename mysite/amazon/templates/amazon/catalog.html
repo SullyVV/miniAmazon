@@ -3,16 +3,17 @@
 {% block body %}
 <center>
 <h1>Catalog Details</h1>
+    <h3>Click on Product name to buy</h3>
 <table>
   <tr>
       <th>product_id</th>
       <th>product_name</th>
-      <th>product stock number</th>
+      <th>stock number</th>
   </tr>
     {% for product in products %}
         <tr>
             <td>{{product.pid}}</td>
-            <td>{{product.dsc}}</td>
+            <td><a href="{% url 'amazon:put_order' product.pid %}">{{product.dsc}}</a></td>
             <td>{{product.count}}</td>
         </tr>
     {% endfor %}

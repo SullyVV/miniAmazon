@@ -1,22 +1,24 @@
 {% extends 'amazon/base.html' %}
 {% block title %}Order{% endblock %}
 {% block body %}
-<a href="{% url 'amazon:catalog' 1%}">Food</a><br>
+
+<center>
+<h1>Choose from catalogs</h1>
+    <a href="{% url 'amazon:catalog' 1%}">Food</a><br>
 <a href="{% url 'amazon:catalog' 2%}">Clothing, Shoes, Jewelry</a><br>
 <a href="{% url 'amazon:catalog' 3%}">Video Games</a><br>
 <a href="{% url 'amazon:catalog' 4%}">Books</a><br>
 <a href="{% url 'amazon:catalog' 5%}">Electronics</a><br>
-<center>
-<h1>Order detail</h1>
-    {% if error_msg %}
-        <h3>{{error_msg}}</h3>
-    {% endif %}
-    <div class="container">
-<form method = 'post' enctype="multipart/form-data">
-    {% csrf_token %}
-{{uf.as_p}}
-<input type="submit" value = "ok" />
-</form>
-        </div>
+<!--<h1>Order detail</h1>-->
+    <!--{% if error_msg %}-->
+        <!--<h3>{{error_msg}}</h3>-->
+    <!--{% endif %}-->
+    <!--<div class="container">-->
+<!--<form method = 'post' enctype="multipart/form-data">-->
+    <!--{% csrf_token %}-->
+<!--{{uf.as_p}}-->
+<!--<input type="submit" value = "ok" />-->
+<!--</form>-->
+        <!--</div>-->
 </center>
 {% endblock %}

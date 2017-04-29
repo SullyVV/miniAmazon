@@ -24,6 +24,8 @@ urlpatterns = [
     url(r'^catalog/(?P<catalog_id>[0-9]+)/$', views.catalog, name='catalog'),
     #/amazon/search
     url(r'^search/$', views.search, name='search'),
+    #/amazon/put_order/1
+    url(r'^put_order/(?P<product_id>[0-9]+)/$', views.put_order, name='put_order'),
     #/user/admin,
     url(r'^user/(?P<userid>[0-9]+)/$', views.user, name='user'),
 ]

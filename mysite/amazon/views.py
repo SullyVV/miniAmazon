@@ -87,9 +87,46 @@ def buy(request):
         uf = ProductForm()
     return render(request, 'amazon/product.html', {'uf':uf})
 
+def put_order(request, product_id):
+    product = get_object_or_404(Whstock, pid=product_id)
+    print(product)
+    if request.method == "POST":
+        pf = ProductForm(request.POST)
+        if pf.is_valid():
+            order_num = pf.cleaned_data['order_num']
+            addr_x = pf.cleaned_data['x']
+            addr_y = pf.cleaned_data['y']
+            client = users[request.user.id]
+            if order_num <= product.count:
+                # accept this order
+                global ship_id
+                trans = Transaction()
+                trans.user = request.user
+                trans.user_name = request.user.username
+                trans.stock = product
+                trans.product_name = product.dsc
+                trans.product_num = order_num
+                trans.address_x = addr_x
+                trans.address_y = addr_y
+                trans.ship_id = ship_id
+                trans.arrived = True
+                trans.save()
+                product.count = product.count - order_num
+                product.save()
+                client.AToPack(product.pid, product.dsc, order_num, ship_id)
+                ship_id = ship_id + 1
+                return render(request, 'amazon/order_accepted.html', {'user_id':request.user.id})
+            else:
+                # deny order and tell warehouse to import
+                client.APurchase(product.pid, product.dsc, order_num - product.count)
+                return render(request, 'amazon/put_order.html', {'pf': pf, 'product':product, 'error_msg': 'Your order is rejected (no sufficient stock), Plz try again later...'})
+    else:
+        pf = ProductForm()
+    return render(request, 'amazon/put_order.html', {'pf':pf, 'product':product})
+
 def user(request, userid):
     if not request.user.is_authenticated:
-        return HttpResponseRedirect(reverse('rsvp:login'))
+        return HttpResponseRedirect(reverse('amazon:login'))
     user = get_object_or_404(User, pk=userid)
     return render(request, 'amazon/user.html',
                     {'user': user})
@@ -111,9 +148,12 @@ def search(request):
         if sf.is_valid():
             catalog = sf.cleaned_data['catalog']
             name = sf.cleaned_data['name']
-            if catalog is not None:
+            print(catalog)
+            print(name)
+            products = Whstock.objects.filter(pid = -1)
+            if catalog is not '':
                 products = Whstock.objects.filter(ctlg=catalog)
-            if name is not None:
+            elif name is not '':
                 products = Whstock.objects.filter(dsc=name)
             if len(products) != 0:
                 return render(request, 'amazon/search_result.html', {'flag':0, 'products': products})
