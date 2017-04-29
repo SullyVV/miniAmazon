@@ -1,4 +1,5 @@
-
+{% load staticfiles %}
+<body style="background-image: url('{% static "amazon/images/background.png"%}')";>
 <center>
 <h1>Login：</h1>
 {% if error_msg %}
@@ -10,3 +11,4 @@
     <input type="submit" value = "ok" />
 </form>
 </center>
+</body>
