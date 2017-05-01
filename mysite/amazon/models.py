@@ -24,7 +24,7 @@ class Transaction(models.Model):
     product_name = models.CharField(max_length=100, default="")
     product_num = models.IntegerField(default=-1)
     ship_id = models.IntegerField(default=-1)
-    package_id = models.IntegerField(default=-1)
+    package_id = models.BigIntegerField(default=-1)
     arrived = models.BooleanField(default=False)
     ready = models.BooleanField(default=False)
     loaded = models.BooleanField(default=False)

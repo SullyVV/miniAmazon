@@ -6,7 +6,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render, render_to_response, get_object_or_404
 from django.urls import reverse
 
-from .client_ import Client
+from .client import Client
 from .forms import UserForm_login, ProductForm, SearchForm, UserInfoForm
 from .models import Whstock, Transaction, UserInfo
 
@@ -46,6 +46,7 @@ def logout(request):
     # need to kill this thread before pop up map
     if request.user.id in threads:
         threads.pop(request.user.id)
+    users[request.user.id].close()
     if request.user.id in users:
         users.pop(request.user.id)
     auth_logout(request)

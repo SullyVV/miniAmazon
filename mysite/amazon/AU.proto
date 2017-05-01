@@ -9,6 +9,6 @@ message AU {
 }
 
 message UA {
-  required int32 packageid = 1;
+  required int64 packageid = 1;
   required int32 truckid = 2;
 }

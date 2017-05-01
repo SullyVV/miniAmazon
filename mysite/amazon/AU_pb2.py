@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='AU.proto',
   package='',
   syntax='proto2',
-  serialized_pb=_b('\n\x08\x41U.proto\"i\n\x02\x41U\x12\x0c\n\x04\x66lag\x18\x01 \x02(\x05\x12\x0e\n\x06shipid\x18\x02 \x02(\x05\x12\x0c\n\x04whid\x18\x03 \x02(\x05\x12\x11\n\tpackageid\x18\x04 \x01(\x03\x12\t\n\x01x\x18\x05 \x02(\x05\x12\t\n\x01y\x18\x06 \x02(\x05\x12\x0e\n\x06ups_id\x18\x07 \x01(\x05\"(\n\x02UA\x12\x11\n\tpackageid\x18\x01 \x02(\x05\x12\x0f\n\x07truckid\x18\x02 \x02(\x05')
+  serialized_pb=_b('\n\x08\x41U.proto\"i\n\x02\x41U\x12\x0c\n\x04\x66lag\x18\x01 \x02(\x05\x12\x0e\n\x06shipid\x18\x02 \x02(\x05\x12\x0c\n\x04whid\x18\x03 \x02(\x05\x12\x11\n\tpackageid\x18\x04 \x01(\x03\x12\t\n\x01x\x18\x05 \x02(\x05\x12\t\n\x01y\x18\x06 \x02(\x05\x12\x0e\n\x06ups_id\x18\x07 \x01(\x05\"(\n\x02UA\x12\x11\n\tpackageid\x18\x01 \x02(\x03\x12\x0f\n\x07truckid\x18\x02 \x02(\x05')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -108,7 +108,7 @@ _UA = _descriptor.Descriptor(
   fields=[
     _descriptor.FieldDescriptor(
       name='packageid', full_name='UA.packageid', index=0,
-      number=1, type=5, cpp_type=1, label=2,
+      number=1, type=3, cpp_type=2, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
