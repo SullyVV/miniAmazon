@@ -102,6 +102,8 @@ class Client():
         command.flag = flag
         command.shipid = trans.ship_id
         command.whid = trans.stock.hid
+        # not yet tested (detail of package)
+        command.detailofpackage = trans.product_name + ":" + trans.product_num
         if trans.package_id is not -1:
             command.packageid = trans.package_id
         command.x = trans.address_x
