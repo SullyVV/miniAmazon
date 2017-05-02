@@ -19,4 +19,4 @@ class SearchForm(forms.Form):
 class UserInfoForm(forms.Form):
     address_x = forms.IntegerField(label="address_x", required=False)
     address_y = forms.IntegerField(label="address_y", required=False)
-    ups_act = forms.IntegerField(label="ups account number", required=False)
+    ups_act = forms.CharField(label="ups account number", required=False)

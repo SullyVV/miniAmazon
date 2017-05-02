@@ -5,7 +5,7 @@ message AU {
   optional int64 packageid = 4; // Why this is optional?: Amazon will have no idea of packageid until ups return it
   required int32 x = 5;
   required int32 y = 6;
-  optional int32 ups_id = 7;    // a requirement for Amazon to specify a UPS account
+  optional string ups_id = 7;    // a requirement for Amazon to specify a UPS account
   optional string detailofpackage = 8;
 }
 

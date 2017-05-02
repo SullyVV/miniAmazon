@@ -10,10 +10,10 @@ from . models import Whstock, Transaction
 from . import amazon_pb2
 from . import AU_pb2
 
-HOST = 'colab-sbx-pvt-25.oit.duke.edu'
+HOST = 'colab-sbx-pvt-16.oit.duke.edu'
 PORT = 23456
 
-UPS_HOST = "colab-sbx-63.oit.duke.edu"
+UPS_HOST = "colab-sbx-pvt-16.oit.duke.edu"
 UPS_PORT = 34567
 
 class Client():
@@ -70,7 +70,7 @@ class Client():
 
     def AConnect(self):
         msg = amazon_pb2.AConnect()
-        msg.worldid = 1000
+        msg.worldid = 1019
         self.send(msg, self.sock)
         print(self.recv(self.sock))
 
@@ -108,7 +108,7 @@ class Client():
             command.packageid = trans.package_id
         command.x = trans.address_x
         command.y = trans.address_y
-        if trans.ups_act is not -1:
+        if trans.ups_act is not None:
             command.ups_id = trans.ups_act
         self.send(command, self.Usock)
 
@@ -168,6 +168,8 @@ class Client():
                     print("second msg for UPS sent(get load success from sim world)")
 
     def ALoad(self, ship_id, truck_id):
+        print("ship id is: " + str(ship_id))
+        print("truck id is: " + str(truck_id))
         command = amazon_pb2.ACommands()
         command.simspeed = 100000
         pack = command.load.add()
