@@ -12,6 +12,7 @@ from .models import Whstock, Transaction, UserInfo
 
 users = {}
 threads = {}
+uthreads = {}
 ship_id = 0
 
 def index(request):

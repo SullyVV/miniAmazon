@@ -70,7 +70,7 @@ class Client():
 
     def AConnect(self):
         msg = amazon_pb2.AConnect()
-        msg.worldid = 1019
+        msg.worldid = 1023
         self.send(msg, self.sock)
         print(self.recv(self.sock))
 
@@ -171,7 +171,7 @@ class Client():
         print("ship id is: " + str(ship_id))
         print("truck id is: " + str(truck_id))
         command = amazon_pb2.ACommands()
-        command.simspeed = 100000
+        command.simspeed = 50000
         pack = command.load.add()
         pack.whnum = 0
         pack.shipid = ship_id;
@@ -185,7 +185,7 @@ class Client():
         ship_id should be unique per ship
         """     
         command = amazon_pb2.ACommands()
-        command.simspeed = 100000
+        command.simspeed = 50000
         pack = command.topack.add()
         pack.whnum = 0
         pack.shipid = ship_id;
@@ -198,7 +198,7 @@ class Client():
 
     def APurchase(self, product_id, description, quantity):
         command = amazon_pb2.ACommands()
-        command.simspeed = 100000
+        command.simspeed = 50000
         purchase = command.buy.add()
         purchase.whnum = 0
         pid = purchase.things.add()
